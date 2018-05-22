@@ -1,0 +1,30 @@
+{
+  "name": "eth-trademan",
+  "version": "1.0.0",
+  "description": "Trade manager app and automated strategy execution for GDAX eth trading",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "start": "node dist/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmcclung/eth-trademan.git"
+  },
+  "keywords": [
+    "ethereum",
+    "eth",
+    "trade"
+  ],
+  "author": "Dylan McClung",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dmcclung/eth-trademan/issues"
+  },
+  "homepage": "https://github.com/dmcclung/eth-trademan#readme",
+  "dependencies": {
+    "gdax": "^0.8.0",
+    "typescript": "^2.8.3"
+  }
+}

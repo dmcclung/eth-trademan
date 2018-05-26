@@ -2,9 +2,8 @@
   "name": "eth-trademan",
   "version": "1.0.0",
   "description": "Trade manager app and automated strategy execution for GDAX eth trading",
-  "main": "app.js",
   "scripts": {
-    "test": "jest",
+    "lint": "tslint -c tslint.json 'src/**/*/ts'",
     "build": "tsc",
     "start": "node dist/app.js"
   },
@@ -25,6 +24,16 @@
   "homepage": "https://github.com/dmcclung/eth-trademan#readme",
   "dependencies": {
     "gdax": "^0.8.0",
+    "microframework": "^0.6.4",
+    "ws": "^5.2.0"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^3.0.5",
+    "utf-8-validate": "^4.0.2"
+  },
+  "devDependencies": {
+    "@types/ws": "^5.1.1",
+    "tslint": "^5.10.0",
     "typescript": "^2.8.3"
   }
 }

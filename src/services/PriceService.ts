@@ -4,7 +4,12 @@ import { PriceEventEmitter } from "../emitters/priceEventEmitter";
 import { PriceEvent } from "../events/PriceEvent";
 
 export class PriceService {
+    // TODO: This is only the current moving average
+    // Need to store historical
     private _movingAverage: number = 0;
+    // TODO: Need to configure timeunits
+    private _timeUnit: string = "MINUTES";
+    private _prices: number[] = [];
     private _priceEmitter: PriceEventEmitter;
     private _positionEmitter: PositionEventEmitter;
     private _logger: LoggerInstance;
@@ -20,27 +25,44 @@ export class PriceService {
     }
 
     get movingAverage(): number {
-        // Keep track of average price for each period, sample 50 periods, keep track of the 50 period average price
-        // Operations needed
-// current price, timestamp, can you get the average from the price history and keep getting it
-// every x amount of time
         return this._movingAverage;
     }
 
     private priceEventListener(priceEvent: PriceEvent) {
-            // 50 period moving average
-// If the price meets the 50 day SMA as a support and bounces upwards, you should think long.
-// If the price breaks the 50 day SMA upward, you should switch your attitude to bullish.
-// You should stay in the trade until the price action breaks the 50 day moving average in the opposite direction.
-
+        // TODO: What synchronization do we need here
+        this.updatePrices(priceEvent.price);
         this.updateMovingAverage();
+
+        // You should stay in the trade until the price action breaks the
+        //  50 day moving average in the opposite direction.
         // if current price is less than moving average
-        this._positionEmitter.emit("short");
-        // if current price is equal to or greater than moving average emit long event
-        this._positionEmitter.emit("long");
+        if (priceEvent.price < this._movingAverage) {
+            this._positionEmitter.emit("short");
+        }
+        // If the price meets the 50 day SMA as a support and bounces
+        // upwards, you should think long.
+        // If the price breaks the 50 day SMA upward, you should switch
+        // your attitude to bullish.
+        // if current price is equal to or greater than moving average emit
+        // long event
+        if (priceEvent.price >= this._movingAverage) {
+            this._positionEmitter.emit("long");
+        }
     }
 
-    private updateMovingAverage(): void {
-        this._logger.log("info", "updating moving average");
+    private updatePrices(latestPrice: number) {
+        // Remove oldest price
+        this._prices.shift();
+        // Add latest price
+        this._prices.push(latestPrice);
+    }
+
+    private updateMovingAverage() {
+        this._logger.debug("updating moving average");
+        let newMovingAverage = 0;
+        this._prices.forEach((price) => {
+            newMovingAverage = newMovingAverage + price;
+        });
+        newMovingAverage = newMovingAverage / this._prices.length;
     }
 }

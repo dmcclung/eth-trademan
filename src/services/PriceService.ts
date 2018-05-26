@@ -22,7 +22,7 @@ export class PriceService {
     get movingAverage(): number {
         // Keep track of average price for each period, sample 50 periods, keep track of the 50 period average price
         // Operations needed
-// current price, timestamp, can you get the average from the price history and keep getting it 
+// current price, timestamp, can you get the average from the price history and keep getting it
 // every x amount of time
         return this._movingAverage;
     }

@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/dmcclung/eth-trademan#readme",
   "dependencies": {
+    "express": "^4.16.3",
     "gdax": "^0.8.0",
     "microframework": "^0.6.4",
     "winston": "^2.4.2",
@@ -33,6 +34,7 @@
     "utf-8-validate": "^4.0.2"
   },
   "devDependencies": {
+    "@types/express": "^4.11.1",
     "@types/winston": "^2.3.9",
     "@types/ws": "^5.1.1",
     "tslint": "^5.10.0",

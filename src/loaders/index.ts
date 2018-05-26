@@ -6,11 +6,11 @@ import { priceServiceLoader } from "./priceServiceLoader";
 import { winstonLogLoader } from "./winstonLogLoader";
 
 const bootstrapLoaders: MicroframeworkLoader[] = [
-    winstonLogLoader,    
+    winstonLogLoader,
     emitterLoader,
     gdaxFeedLoader,
     gdaxOrderLoader,
-    priceServiceLoader
+    priceServiceLoader,
 ];
 
 export default bootstrapLoaders;

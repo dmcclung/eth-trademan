@@ -6,5 +6,5 @@ export function gdaxOrderLoader(options?: MicroframeworkSettings) {
     // limit order post-only
 
     // use process.env to pick up API user and password
-// in addition to authenticated client
+    // in addition to authenticated client
 }

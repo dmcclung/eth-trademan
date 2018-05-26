@@ -25,6 +25,7 @@
   "dependencies": {
     "gdax": "^0.8.0",
     "microframework": "^0.6.4",
+    "winston": "^2.4.2",
     "ws": "^5.2.0"
   },
   "optionalDependencies": {
@@ -32,6 +33,7 @@
     "utf-8-validate": "^4.0.2"
   },
   "devDependencies": {
+    "@types/winston": "^2.3.9",
     "@types/ws": "^5.1.1",
     "tslint": "^5.10.0",
     "typescript": "^2.8.3"

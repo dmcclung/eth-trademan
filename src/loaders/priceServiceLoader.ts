@@ -1,6 +1,8 @@
 import { MicroframeworkSettings } from "microframework";
-import { PositionEventEmitter } from "../emitters/PositionEventEmitter";
-import { PriceService } from "../services/PriceService";
+import moment from "moment";
+import { MovingAverage } from "../core/MovingAverage";
+import { PriceService } from "../core/PriceService";
+import { fiftyPeriodMovingAverageStrategy } from "../core/strategy/fiftyPeriodMovingAverageStrategy";
 
 export function priceServiceLoader(options?: MicroframeworkSettings) {
     if (options) {
@@ -8,7 +10,14 @@ export function priceServiceLoader(options?: MicroframeworkSettings) {
         const positionEventEmitter = options.getData("positionEmitter");
         const logger = options.getData("logger");
 
-        const priceService = new PriceService(priceEmitter, positionEventEmitter, logger);
+        const day = moment.duration(24, "hours").milliseconds();
+
+        const priceService = new PriceService(
+            [new MovingAverage(50, day)],
+            fiftyPeriodMovingAverageStrategy,
+            priceEmitter,
+            positionEventEmitter,
+            logger);
         options.setData("priceService", priceService);
     }
 

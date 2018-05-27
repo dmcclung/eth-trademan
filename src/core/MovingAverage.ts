@@ -1,24 +1,24 @@
-import { average } from "./MaMath";
-
-export class SimpleMovingAverage {
-    // current moving average
-    private _movingAverage: number = 0;
-    // prices over time periods
-    private _prices: number[] = [];
-    // periods in moving average
-    private _movingAveragePeriods: number;
+export class MovingAverage {
     // timestamp of last period closing
     private _lastPeriod: number = Date.now();
     // period length
     private _periodLength: number;
+    // periods in moving average
+    private _movingAveragePeriods: number;
+    // prices over time periods
+    private prices: number[] = [];
 
     constructor(movingAveragePeriods: number, periodLength: number) {
         this._periodLength = periodLength;
         this._movingAveragePeriods = movingAveragePeriods;
     }
 
-    get movingAverage(): number {
-        return this._movingAverage;
+    get current(): number {
+        let sum = 0;
+        this.prices.forEach((price) => {
+            sum = sum + price;
+        });
+        return sum / this.prices.length;
     }
 
     get periodLength(): number {
@@ -29,14 +29,16 @@ export class SimpleMovingAverage {
         return this._lastPeriod;
     }
 
+    get movingAveragePeriods(): number {
+        return this._movingAveragePeriods;
+    }
+
     public updatePrices(latestPrice: number) {
         // Remove oldest price
-        if (this._prices.length === this._movingAveragePeriods) {
-            this._prices.shift();
+        if (this.prices.length === this._movingAveragePeriods) {
+            this.prices.shift();
         }
         // Add latest price
-        this._prices.push(latestPrice);
-
-        this._movingAverage = average(this._prices);
+        this.prices.push(latestPrice);
     }
 }

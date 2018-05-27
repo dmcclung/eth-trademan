@@ -1,2 +1,6 @@
+import { PositionEventEmitter } from "../emitters/PositionEventEmitter";
 
-export type PriceStrategy = (movingAverage: number, latestPrice: number) => void;
+export type priceStrategy = (
+    movingAverage: number,
+    latestPrice: number,
+    positionEmitter: PositionEventEmitter) => void;

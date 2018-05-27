@@ -2,63 +2,36 @@ import { LoggerInstance } from "winston";
 import { PositionEventEmitter } from "../emitters/PositionEventEmitter";
 import { PriceEventEmitter } from "../emitters/priceEventEmitter";
 import { PriceEvent } from "../events/PriceEvent";
-import { PriceStrategy } from "./PriceStrategy";
+import { SimpleMovingAverage } from "./MovingAverage";
+import { priceStrategy } from "./priceStrategy";
 
 export class PriceService {
-    
-
-    private _priceStrategy: PriceStrategy;
-
+    private _strategy: priceStrategy;
+    // TODO: Now this can be updated to an array of moving averages
+    private _movingAverage: SimpleMovingAverage;
     private _priceEmitter: PriceEventEmitter;
     private _positionEmitter: PositionEventEmitter;
     private _logger: LoggerInstance;
 
-    constructor(movingAveragePeriods: number,
-                periodLength: number,
-                priceStrategy: PriceStrategy,
+    constructor(movingAverage: SimpleMovingAverage,
+                strategy: priceStrategy,
                 priceEmitter: PriceEventEmitter,
                 positionEmitter: PositionEventEmitter,
                 logger: LoggerInstance) {
-        this._periodLength = periodLength;
-        this._movingAveragePeriods = movingAveragePeriods;
-        this._priceStrategy = priceStrategy;
+        this._strategy = strategy;
+        this._movingAverage = movingAverage;
+        this._positionEmitter = positionEmitter;
+        this._logger = logger;
 
         this._priceEmitter = priceEmitter;
         this._priceEmitter.on("priceEvent", this.priceEventListener);
-
-        this._positionEmitter = positionEmitter;
-        this._logger = logger;
-    }
-
-    get movingAverage(): number {
-        return this._movingAverage;
     }
 
     private priceEventListener(priceEvent: PriceEvent) {
         // check if period has elapsed
         const latestPriceTime = new Date(priceEvent.time).getTime();
-        if (latestPriceTime - this._lastPeriod >= this._periodLength) {
-            this.updatePrices(priceEvent.price);
-            this._movingAverage = this.average(this._prices);
+        if (latestPriceTime - this._movingAverage.lastPeriod >= this._movingAverage.periodLength) {
+            this._movingAverage.updatePrices(priceEvent.price);
         }
-
-        this._priceStrategy(this._movingAverage, priceEvent.price);
-    }
-
-    private updatePrices(latestPrice: number) {
-        // Remove oldest price
-        if (this._prices.length === this._movingAveragePeriods) {
-            this._prices.shift();
-        }
-        // Add latest price
-        this._prices.push(latestPrice);
-    }
-
-    private average(prices: number[]): number {
-        let sum = 0;
-        prices.forEach((price) => {
-            sum = sum + price;
-        });
-        return sum / prices.length;
     }
 }

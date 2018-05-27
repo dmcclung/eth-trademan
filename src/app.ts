@@ -1,10 +1,11 @@
 import { bootstrapMicroframework } from "microframework";
+import { Logger } from "winston";
 import bootstrapLoaders from "./loaders";
+
+const logger = new Logger();
 
 bootstrapMicroframework(
     bootstrapLoaders,
-).then(() => console.log("Application is running"))
+).then(() => logger.info("Application is running"))
 
- .catch((error) => console.log("Application error: " + error));
-
-// TODO: Need a banner here and more details on what was loaded
+ .catch((error) => logger.error("Application error: " + error));

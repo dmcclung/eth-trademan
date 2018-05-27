@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*/ts'",
     "build": "tsc",
+    "test": "jest",
     "start": "node dist/app.js",
     "debug": "node --inspect-brk dist/app.js"
   },
@@ -33,7 +34,10 @@
     "utf-8-validate": "^4.0.2"
   },
   "devDependencies": {
+    "@types/jest": "^22.2.3",
     "@types/winston": "^2.3.9",
+    "jest": "^23.0.0",
+    "ts-jest": "^22.4.6",
     "tslint": "^5.10.0",
     "typescript": "^2.8.3"
   }
